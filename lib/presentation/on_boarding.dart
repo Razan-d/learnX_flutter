@@ -29,6 +29,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   color: Colors.grey,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  fontFamily: "Almarai-Arabic",
                 ),
               ),
             ),
@@ -50,7 +51,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               // العنوان
               Text(
                 "انضم إلى LearnX للبدء في درسك",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,fontFamily: "Almarai-Arabic",),
                 textAlign: TextAlign.center,
               ),
 
@@ -59,7 +60,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               // النص
               Text(
                 "انضم إلينا وتعلّم من نخبة مدربينا!",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal,fontFamily: "Almarai-Arabic",),
                 textAlign: TextAlign.center,
               ),
 
@@ -87,6 +88,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            fontFamily: "Almarai-Arabic",
                           ),
                         ),
                       ),
@@ -115,6 +117,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             color: Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            fontFamily: "Almarai-Arabic",
                           ),
                         ),
                       ),
