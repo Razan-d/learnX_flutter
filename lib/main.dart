@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learnx_flutter/presentation/home_page.dart';
 import 'package:learnx_flutter/presentation/on_boarding.dart';
 import 'package:learnx_flutter/presentation/sign_in.dart';
 import 'package:learnx_flutter/presentation/sign_up.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: OnBoardingPage(),
+      home: HomePage(),
       debugShowCheckedModeBanner:false,
       builder: (context, child) {
         return Directionality(
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "SignUp" :(context) => SignUp(),
         "SignIn" :(context) => SignIn(),
+        "Home" :(context) => HomePage(),
         },
     );
   }

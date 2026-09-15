@@ -257,7 +257,8 @@ class _SignInState extends State<SignIn> {
                           ),
                         );
 
-                        print("Login Success");
+                        Navigator.pushNamed(context, "Home");
+
                       } else {
                         // رسالة خطأ عند عدم تطابق البيانات
                         ScaffoldMessenger.of(context).showSnackBar(
