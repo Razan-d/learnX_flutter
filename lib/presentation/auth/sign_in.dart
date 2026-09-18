@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:learnx_flutter/service/auth.dart';
 
 // نموذج (Object) لتخزين بيانات تسجيل الدخول
-class UserLogin {
-  final String email;
-  final String password;
+// class UserLogin {
+//   final String email;
+//   final String password;
 
-  UserLogin({this.email = "razan@g.com", this.password = "123456"});
-}
+//   UserLogin({this.email = "razan@g.com", this.password = "123456"});
+// }
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -16,6 +17,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  AuthServices auth = AuthServices();
   // مفتاح الـ Form للتحقق من المدخلات
   final _formKey = GlobalKey<FormState>();
 
@@ -60,14 +62,13 @@ class _SignInState extends State<SignIn> {
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    fontFamily: "Almarai-Arabic",
                   ),
                 ),
                 SizedBox(height: 10),
 
                 Text(
                   "يرجى تسجيل الدخول باستخدام حسابك ",
-                  style: TextStyle(fontSize: 15, fontFamily: "Almarai-Arabic"),
+                  style: TextStyle(fontSize: 15),
                 ),
 
                 SizedBox(height: 30),
@@ -83,7 +84,6 @@ class _SignInState extends State<SignIn> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                     SizedBox(height: 10),
@@ -154,7 +154,6 @@ class _SignInState extends State<SignIn> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                     SizedBox(height: 10),
@@ -236,16 +235,24 @@ class _SignInState extends State<SignIn> {
                 // زر تسجيل الدخول
                 // ------------------------------
                 GestureDetector(
-                  onTap: () {
+                  onTap: ()async{
                     if (_formKey.currentState!.validate()) {
-                      final user = UserLogin(); // القيم الثابتة
-
-                      // التحقق من مطابقة البيانات
-                      if (emailController.text == user.email &&
-                          passwordController.text == user.password) {
+                      try{
+                      await auth.signIn(emailController.text.trim(), passwordController.text.trim());                                              
+                      print("user sign in");
                         // نجاح تسجيل الدخول
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                        if(mounted){
+                        showDialog(
+                          context:context,
+                          builder: (context){
+                          return AlertDialog(
+                            // title: Text(
+                            //   "تم تسجيل الدخول بنجاح",
+                            //   style: TextStyle(
+                            //     fontSize: 15,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
                             content: Text(
                               "تم تسجيل الدخول بنجاح",
                               style: TextStyle(
@@ -253,26 +260,60 @@ class _SignInState extends State<SignIn> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            backgroundColor: Colors.greenAccent,
-                          ),
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    "Home",
+                                    (route) => false,
+                                  );
+                                },
+                                child: Text("حسناً"),
+                              ),
+                            ],
+                          );
+                          }
                         );
+                        }
 
-                        Navigator.pushNamed(context, "Home");
+                        // Navigator.pushNamed(context, "Home");
 
-                      } else {
+                      } catch (e) {
                         // رسالة خطأ عند عدم تطابق البيانات
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
+                        if(mounted){
+                        showDialog(
+                          context:context,
+                          builder: (context){
+                          return AlertDialog(
+                            title: Text(
+                              "خطأ",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            ),
+                            content:Text(
                               "البريد أو كلمة المرور غير صحيحة",
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            backgroundColor: Colors.redAccent,
-                          ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("حسناً"),
+                              ),
+                            ],
+                          );
+                          
+                          }
                         );
+                        }
 
                         print("Login Failed");
                       }
@@ -293,7 +334,6 @@ class _SignInState extends State<SignIn> {
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                   ),
@@ -314,8 +354,7 @@ class _SignInState extends State<SignIn> {
                         "أو سجّل الدخول باستخدام",
                         style: TextStyle(
                           fontSize: 15,
-                          fontFamily: "Almarai-Arabic",
-                        ),
+                          ),
                       ),
                     ),
                     SizedBox(width: 80, child: Divider(color: Colors.grey)),
@@ -344,8 +383,7 @@ class _SignInState extends State<SignIn> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
-                            fontFamily: "Almarai-Arabic",
-                          ),
+                              ),
                         ),
                         SizedBox(width: 15),
                         Image.asset("assets/icon _facebookpng.png", width: 30),
@@ -377,8 +415,7 @@ class _SignInState extends State<SignIn> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 15,
-                            fontFamily: "Almarai-Arabic",
-                          ),
+                              ),
                         ),
                         SizedBox(width: 15),
                         Image.asset("assets/icon_google.png", width: 40),
@@ -399,7 +436,6 @@ class _SignInState extends State<SignIn> {
                       "ليس لديك حساب؟",
                       style: TextStyle(
                         fontSize: 15,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                     SizedBox(width: 10),
@@ -413,8 +449,7 @@ class _SignInState extends State<SignIn> {
                           fontSize: 15,
                           color: Color.fromRGBO(0, 48, 150, 1),
                           fontWeight: FontWeight.bold,
-                          fontFamily: "Almarai-Arabic",
-                        ),
+                          ),
                       ),
                     ),
                   ],

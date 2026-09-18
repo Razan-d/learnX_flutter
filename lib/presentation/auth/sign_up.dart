@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:learnx_flutter/service/auth.dart';
 
 // نموذج بيانات التسجيل
-class UserSignUp {
-  final String fullName;
-  final String email;
-  final String password;
+// class UserSignUp {
+//   final String fullName;
+//   final String email;
+//   final String password;
 
-  UserSignUp({
-    required this.fullName,
-    required this.email,
-    required this.password,
-  });
-}
+//   UserSignUp({
+//     required this.fullName,
+//     required this.email,
+//     required this.password,
+//   });
+// }
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -21,6 +22,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  AuthServices auth = AuthServices();
   // مفتاح الـ Form
   final _formKey = GlobalKey<FormState>();
 
@@ -67,13 +69,12 @@ class _SignUpState extends State<SignUp> {
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    fontFamily: "Almarai-Arabic",
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
                   " أنشئ حساباً لتبدأ رحلتك التعليمية ",
-                  style: TextStyle(fontSize: 15, fontFamily: "Almarai-Arabic"),
+                  style: TextStyle(fontSize: 15),
                 ),
 
                 SizedBox(height: 30),
@@ -89,7 +90,6 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                     SizedBox(height: 10),
@@ -157,7 +157,6 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                     SizedBox(height: 10),
@@ -225,7 +224,6 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                     SizedBox(height: 10),
@@ -310,7 +308,6 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                     SizedBox(height: 10),
@@ -389,55 +386,81 @@ class _SignUpState extends State<SignUp> {
                 // زر إنشاء الحساب
                 // ------------------------------
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async{
                     if (_formKey.currentState!.validate()) {
-                      final user = UserSignUp(
-                        fullName: fullNameController.text,
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
+                      try{
+                     await auth.signUp(fullNameController.text.trim(),emailController.text.trim(), passwordController.text.trim());                       
 
-                      print("User Created:");
-                      print("Name: ${user.fullName}");
-                      print("Email: ${user.email}");
-                      print("Password: ${user.password}");
-
-                      
-                      Navigator.pushNamed(context, "SignIn");
-                    
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            "تم إنشاء الحساب بنجاح",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                      print("User Created");
+                       if(mounted){
+                        showDialog(
+                          context:context,
+                          builder: (context){
+                          return AlertDialog(
+                            // title: Text(
+                            //   "تم تسجيل الدخول بنجاح",
+                            //   style: TextStyle(
+                            //     fontSize: 15,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
+                            content: Text(
+                              "تم أنشاء الحساب بنجاح",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          backgroundColor: Colors.greenAccent,
-                        ),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            "يرجى تعبئة جميع الحقول بشكل صحيح",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pushNamed(context, "SignIn");
+                                },
+                                child: Text("حسناً"),
+                              ),
+                            ],
+                          );
+                          }
+                        );
+                        }
+                    } catch (e){
+                         if(mounted){
+                        showDialog(
+                          context:context,
+                          builder: (context){
+                          return AlertDialog(
+                            title: Text(
+                              "خطأ",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
+                            content: Text(
+                              "يرجى تعبئة جميع الحقول بشكل صحيح",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                           ),
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            248,
-                            135,
-                            127,
-                          ),
-                        ),
-                      );
+                          actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("حسناً"),
+                                  ),
+                            ],
+                          );
+                          
+                          }
+                        );
+                        }
+                      }
                     }
                   },
+                    
+                  
 
                   child: Container(
                     alignment: Alignment.center,
@@ -453,7 +476,6 @@ class _SignUpState extends State<SignUp> {
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                   ),
@@ -474,8 +496,7 @@ class _SignUpState extends State<SignUp> {
                         "أو سجّل باستخدام",
                         style: TextStyle(
                           fontSize: 15,
-                          fontFamily: "Almarai-Arabic",
-                        ),
+                          ),
                       ),
                     ),
                     SizedBox(width: 80, child: Divider(color: Colors.grey)),
@@ -504,8 +525,7 @@ class _SignUpState extends State<SignUp> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
-                            fontFamily: "Almarai-Arabic",
-                          ),
+                              ),
                         ),
                         SizedBox(width: 15),
                         Image.asset("assets/icon _facebookpng.png", width: 30),
@@ -537,8 +557,7 @@ class _SignUpState extends State<SignUp> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 20,
-                            fontFamily: "Almarai-Arabic",
-                          ),
+                              ),
                         ),
                         SizedBox(width: 15),
                         Image.asset("assets/icon_google.png", width: 40),
@@ -559,7 +578,6 @@ class _SignUpState extends State<SignUp> {
                       "هل لديك حساب بالفعل؟ ",
                       style: TextStyle(
                         fontSize: 15,
-                        fontFamily: "Almarai-Arabic",
                       ),
                     ),
                     SizedBox(width: 10),
@@ -573,8 +591,7 @@ class _SignUpState extends State<SignUp> {
                           fontSize: 15,
                           color: Color.fromRGBO(0, 48, 150, 1),
                           fontWeight: FontWeight.bold,
-                          fontFamily: "Almarai-Arabic",
-                        ),
+                          ),
                       ),
                     ),
                   ],

@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:learnx_flutter/presentation/home_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:learnx_flutter/presentation/main_navigation_screen.dart';
 import 'package:learnx_flutter/presentation/on_boarding.dart';
-import 'package:learnx_flutter/presentation/sign_in.dart';
-import 'package:learnx_flutter/presentation/sign_up.dart';
+import 'package:learnx_flutter/presentation/auth/sign_in.dart';
+import 'package:learnx_flutter/presentation/auth/sign_up.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
-  runApp( MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL'] ?? '',
+    publishableKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,9 +22,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final session = Supabase.instance.client.auth.currentSession;
+
     return MaterialApp(
-      home: HomePage(),
-      debugShowCheckedModeBanner:false,
+      title: 'LearnX LMS',
+      theme: ThemeData(
+        fontFamily: "Almarai-Arabic",
+        scaffoldBackgroundColor: Colors.grey.shade50,
+      ),
+      home: session != null ? const MainNavigationScreen() : const OnBoardingPage(),
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return Directionality(
           textDirection: TextDirection.rtl,
@@ -23,26 +39,11 @@ class MyApp extends StatelessWidget {
         );
       },
       routes: {
-        "SignUp" :(context) => SignUp(),
-        "SignIn" :(context) => SignIn(),
-        "Home" :(context) => HomePage(),
-        },
+        "SignUp": (context) => const SignUp(),
+        "SignIn": (context) => const SignIn(),
+        "Home": (context) => const MainNavigationScreen(),
+        "MainNavigation": (context) => const MainNavigationScreen(),
+      },
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-       return Container();
   }
 }

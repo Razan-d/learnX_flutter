@@ -13,29 +13,28 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "SignIn");
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 30),
-              child: Text(
-                "تخطي",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Almarai-Arabic",
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   actions: [
+      //     TextButton(
+      //       onPressed: () {
+      //         Navigator.pushNamed(context, "SignIn");
+      //       },
+      //       child: Container(
+      //         margin: EdgeInsets.symmetric(horizontal: 30),
+      //         child: Text(
+      //           "تخطي",
+      //           style: TextStyle(
+      //             color: Colors.grey,
+      //             fontSize: 20,
+      //             fontWeight: FontWeight.bold,
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
 
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -51,7 +50,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               // العنوان
               Text(
                 "انضم إلى LearnX للبدء في درسك",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,fontFamily: "Almarai-Arabic",),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
 
@@ -60,7 +59,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               // النص
               Text(
                 "انضم إلينا وتعلّم من نخبة مدربينا!",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal,fontFamily: "Almarai-Arabic",),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
                 textAlign: TextAlign.center,
               ),
 
@@ -88,7 +87,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            fontFamily: "Almarai-Arabic",
                           ),
                         ),
                       ),
@@ -117,7 +115,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             color: Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            fontFamily: "Almarai-Arabic",
                           ),
                         ),
                       ),
